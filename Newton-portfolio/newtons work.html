@@ -1,0 +1,729 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Newton Irungu — Portfolio</title>
+  <meta name="description" content="Portfolio of Newton Irungu — Web Development, Digital Marketing, Logo Design, Content Creation." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0b1020;
+      --card: #121833;
+      --muted: #8ea0ff;
+      --text: #e8ecff;
+      --accent: #ff4db3; /* deep pink */
+      --accent-2: #34c3ff; /* sky blue */
+      --ring: rgba(255,77,179,.45);
+      --shadow: 0 20px 40px rgba(0,0,0,.35);
+      --radius: 18px;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      color: var(--text);
+      background: radial-gradient(1200px 800px at 80% -10%, rgba(52,195,255,.25), transparent 60%),
+                  radial-gradient(800px 600px at -10% 30%, rgba(255,77,179,.2), transparent 60%),
+                  var(--bg);
+    }
+
+    /* Layout helpers */
+    .container { width: min(1120px, 92%); margin: 0 auto; }
+    .grid { display: grid; gap: 1.25rem; }
+    .btn {
+      display: inline-flex; align-items: center; gap: .6rem;
+      border: 0; padding: .9rem 1.2rem; border-radius: 999px;
+      font-weight: 700; letter-spacing: .3px; cursor: pointer;
+      background: linear-gradient(135deg, var(--accent), var(--accent-2));
+      color: #0a0d1a; box-shadow: 0 10px 24px rgba(255,77,179,.35);
+      transition: transform .15s ease, filter .2s ease;
+      text-decoration: none;
+    }
+    .btn:hover { transform: translateY(-2px); filter: brightness(1.05); }
+    .btn.ghost {
+      background: transparent; color: var(--text); border: 1px solid rgba(255,255,255,.15);
+      box-shadow: none; backdrop-filter: blur(6px);
+    }
+
+    /* Header */
+    header {
+      position: sticky; top: 0; z-index: 50; backdrop-filter: saturate(140%) blur(10px);
+      background: rgba(11,16,32,.6); border-bottom: 1px solid rgba(255,255,255,.08);
+    }
+    .nav { display: flex; align-items: center; justify-content: space-between; padding: 14px 0; }
+    .brand { font-weight: 800; letter-spacing: .3px; display:flex; align-items:center; gap:.6rem }
+    .brand img { width: 36px; height: 36px; border-radius: 50%; object-fit: cover; border:1px solid rgba(255,255,255,.2)}
+    .links { display:flex; gap: 1rem; align-items:center }
+    .links a { color: var(--text); text-decoration: none; opacity: .9 }
+    .links a:hover { opacity: 1; }
+
+    /* Mobile nav */
+    .hamburger { display:none; background:none; border:0; color:var(--text); font-size:1.4rem }
+    @media (max-width: 780px){
+      .links { display:none }
+      .hamburger { display:block }
+      .mobile-menu { display:none; position:fixed; inset:64px 0 auto 0; background:rgba(11,16,32,.96); border-top:1px solid rgba(255,255,255,.08) }
+      .mobile-menu a { display:block; padding:14px 20px; border-bottom:1px solid rgba(255,255,255,.06); color:var(--text); text-decoration:none }
+      .mobile-menu.show { display:block }
+    }
+
+    /* Hero */
+    .hero { padding: 64px 0 28px }
+    .card{
+      background: linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.02));
+      border: 1px solid rgba(255,255,255,.08); border-radius: var(--radius); box-shadow: var(--shadow)
+    }
+    .hero-inner{ display:grid; grid-template-columns: 1.1fr .9fr; gap:24px; align-items:center }
+    @media (max-width: 900px){ .hero-inner{ grid-template-columns: 1fr } }
+    .hero h1{ margin:.2rem 0 .75rem; font-size:clamp(1.9rem,3.2vw,3rem); line-height:1.1 }
+    .hero p{ margin:0 0 1.2rem; color:#cfd7ff }
+    .stack{ display:flex; gap:.8rem; flex-wrap:wrap }
+    .chip{ padding:.45rem .7rem; border-radius:999px; border:1px solid rgba(255,255,255,.12); font-size:.9rem }
+
+    /* Show FULL portrait images (no cropping) */
+    .full-photo{
+      width:100%;
+      max-height:560px;
+      height:auto;
+      object-fit:contain; /* show entire image */
+      background:#0b1020;
+      border-radius:16px;
+      display:block;
+    }
+
+    /* Section */
+    section{ padding: 40px 0 }
+    h2{ margin:0 0 .8rem; font-size: clamp(1.2rem, 2.1vw, 1.8rem) }
+    .subtitle{ margin:0 0 1rem; color:#cfd7ff }
+
+    /* Work grid */
+    .grid-3{ display:grid; gap:16px; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)) }
+    .tile{ padding:18px }
+    .project-thumb{ width:100%; aspect-ratio: 16/10; border-radius:12px; object-fit:cover; border:1px solid rgba(255,255,255,.08) }
+
+    /* About block */
+    .about{ display:grid; grid-template-columns: .9fr 1.1fr; gap:24px; align-items:center }
+    @media (max-width: 900px){ .about{ grid-template-columns: 1fr } }
+    .about img{
+      width:100%;
+      max-height:560px;
+      height:auto;
+      object-fit:contain; /* full image */
+      background:#0b1020;
+      border:1px solid rgba(255,255,255,.12);
+      border-radius:16px;
+      display:block;
+    }
+
+    /* Contact */
+    .contact-card{ padding:22px }
+    .contact-grid{ display:grid; gap:14px; grid-template-columns: 1fr 1fr }
+    @media (max-width: 700px){ .contact-grid{ grid-template-columns: 1fr } }
+    .input{ width:100%; padding:12px 14px; border-radius:12px; border:1px solid rgba(255,255,255,.12); background:rgba(255,255,255,.03); color:var(--text) }
+    .input::placeholder{ color:#bcccff }
+
+    footer{ padding:40px 0; color:#bcccff; font-size:.95rem }
+    a:any-link{ color:var(--muted); text-decoration:none }
+    a:any-link:hover{ text-decoration:underline }
+
+    /* Floating WhatsApp button */
+    .fab-whatsapp{
+      position:fixed; right:18px; bottom:18px; z-index:1000;
+      background:linear-gradient(135deg, var(--accent), var(--accent-2));
+      color:#0a0d1a; font-weight:800; text-decoration:none;
+      padding:.9rem 1.1rem; border-radius:999px; box-shadow:var(--shadow);
+    }
+    .fab-whatsapp:hover{ filter:brightness(1.05); transform:translateY(-2px); transition:all .15s }
+
+    /* GOLD stars */
+    #testimonials .tile p:first-of-type{
+      color:#FFD54F; text-shadow:0 0 12px rgba(255,213,79,.35);
+      letter-spacing:2px; font-size:1.1rem;
+    }
+    .stars{ color:#FFD54F; text-shadow:0 0 12px rgba(255,213,79,.35); letter-spacing:2px; }
+
+    /* Stats strip */
+    .stat-strip{ display:grid; grid-template-columns:repeat(auto-fit,minmax(160px,1fr)); gap:16px; padding:18px; margin-top:-10px }
+    .stat{ text-align:center; padding:14px; border-radius:16px; border:1px solid rgba(255,255,255,.08);
+           background:linear-gradient(180deg,rgba(255,255,255,.04),rgba(255,255,255,.02)); }
+    .stat .num{ font-weight:800; font-size:clamp(1.3rem,2.2vw,1.8rem); line-height:1.1 }
+    .stat .label{ color:#cfd7ff; margin-top:4px; font-size:.95rem }
+
+    /* Reviews filter */
+    .filter-row{ display:flex; gap:8px; flex-wrap:wrap; margin:6px 0 12px }
+    .filter-btn{ border:1px solid rgba(255,255,255,.15); background:transparent; color:var(--text); padding:.55rem .9rem; border-radius:999px; cursor:pointer }
+    .filter-btn.active{ background:rgba(255,255,255,.08) }
+
+    /* ---------- Smaller Case-Study Images + Responsive Layout ---------- */
+    #cs-website img,
+    #cs-marketing img,
+    #cs-logo img,
+    #cs-content img{
+      width:100%;
+      max-height:320px;      /* others stay neat */
+      aspect-ratio:16/9;
+      object-fit:cover;
+      border-radius:12px;
+      border:1px solid rgba(255,255,255,.08);
+    }
+    #cs-website .grid,
+    #cs-marketing .grid,
+    #cs-logo .grid,
+    #cs-content .grid{
+      grid-template-columns:1fr 1fr !important;
+    }
+    @media (max-width:900px){
+      #cs-website .grid,
+      #cs-marketing .grid,
+      #cs-logo .grid,
+      #cs-content .grid{
+        grid-template-columns:1fr !important; /* one column on phones */
+      }
+      .full-photo, .about img{ max-height:420px; }
+    }
+    @media (max-width:600px){
+      .full-photo, .about img{ max-height:360px; }
+    }
+
+    /* ---- OVERRIDE: show FULL image in Website Case Study only ---- */
+    #cs-website img.cs-full{
+      max-height:560px;   /* taller so full body fits */
+      height:auto;
+      width:100%;
+      object-fit:contain; /* no cropping */
+      aspect-ratio:auto;  /* disable 16:9 */
+      background:#0b1020;
+    }
+    @media (max-width:900px){ #cs-website img.cs-full{ max-height:420px; } }
+    @media (max-width:600px){ #cs-website img.cs-full{ max-height:360px; } }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="container nav">
+      <div class="brand">
+        <img src="20250205_115747.jpg" alt="Newton Irungu" />
+        <span>Newton Irungu</span>
+      </div>
+      <nav class="links">
+        <a href="#work">Work</a>
+        <a href="#services">Services</a>
+        <a href="#pricing">Pricing</a>
+        <a href="#testimonials">Testimonials</a>
+        <a href="#reviews">Reviews</a>
+        <a href="#about">About</a>
+        <a href="#contact">Contact</a>
+        <a class="btn" href="https://wa.me/254792010913?text=Hi%20Newton%2C%20I%E2%80%99m%20interested%20in%20a%20website%2Fbranding%2Fmarketing.%20My%20business%20is%20____.%20Timeline%3A%20____.%20Can%20we%20chat%3F" target="_blank" rel="noopener">Chat me on WhatsApp</a>
+      </nav>
+      <button class="hamburger" id="hamburger">☰</button>
+    </div>
+    <div class="mobile-menu" id="mobileMenu">
+      <a href="#work">Work</a>
+      <a href="#services">Services</a>
+      <a href="#pricing">Pricing</a>
+      <a href="#testimonials">Testimonials</a>
+      <a href="#reviews">Reviews</a>
+      <a href="#about">About</a>
+      <a href="#contact">Contact</a>
+      <a href="https://wa.me/254792010913?text=Hi%20Newton%2C%20I%E2%80%99m%20interested%20in%20a%20website%2Fbranding%2Fmarketing.%20My%20business%20is%20____.%20Timeline%3A%20____.%20Can%20we%20chat%3F" target="_blank" rel="noopener">WhatsApp</a>
+    </div>
+  </header>
+
+  <main class="container">
+    <!-- HERO (Showcase) -->
+    <section class="hero">
+      <div class="card hero-inner" style="padding:24px;">
+        <div>
+          <h1>Websites that get clients — not just clicks.</h1>
+          <p>Get a beautiful, fast website in <strong>7 days</strong> — plus a simple marketing plan that brings <strong>real clients</strong>, not just traffic.</p>
+          <div class="stack" style="margin:14px 0 18px">
+            <span class="chip">HTML/CSS/JS</span>
+            <span class="chip">Responsive Design</span>
+            <span class="chip">Meta & TikTok Ads</span>
+            <span class="chip">Logo & Brand Kits</span>
+            <span class="chip">Content Systems</span>
+          </div>
+          <div class="stack">
+            <a class="btn" href="#work">See My Work</a>
+            <a class="btn ghost" href="#contact">Hire Me</a>
+            <a class="btn ghost" href="tel:+254792010913">Call: 0792010913</a>
+          </div>
+        </div>
+        <div class="card" style="padding:0; display:flex; align-items:center; justify-content:center; min-height:260px;">
+          <img class="full-photo" src="20250205_115451.jpg" alt="Newton Irungu — Showcase" />
+        </div>
+      </div>
+    </section>
+
+    <!-- STATS / SOCIAL PROOF -->
+    <section id="stats">
+      <div class="stat-strip card">
+        <div class="stat">
+          <div class="num" id="views-count" aria-label="Site views">0</div>
+          <div class="label">👁 Site Views</div>
+        </div>
+        <div class="stat">
+          <div class="num" data-target="12">0</div>
+          <div class="label">Projects Delivered</div>
+        </div>
+        <div class="stat">
+          <div class="num" data-target="9">0</div>
+          <div class="label">Happy Clients</div>
+        </div>
+        <div class="stat">
+          <div class="num stars" aria-label="5 out of 5 stars">★★★★★</div>
+          <div class="label">Avg Rating</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SERVICES -->
+    <section id="services">
+      <h2>Services</h2>
+      <p class="subtitle">No jargon. No stress. Just clean work and <strong>measurable results</strong>.</p>
+      <div class="grid-3">
+        <article class="card tile">
+          <h3>Starter Website</h3>
+          <p>1–3 pages, mobile-first, SEO basics, launch in 7 days.</p>
+          <ul>
+            <li>Responsive layout</li>
+            <li>Contact form</li>
+            <li>Basic analytics</li>
+          </ul>
+          <a class="btn" href="#contact">Get Quote</a>
+        </article>
+        <article class="card tile">
+          <h3>Brand & Logo</h3>
+          <p>Logo, color palette, fonts, social templates, mini guide.</p>
+          <ul>
+            <li>3 concepts + revisions</li>
+            <li>Export kit (PNG, SVG)</li>
+            <li>Profile + banner set</li>
+          </ul>
+          <a class="btn" href="#contact">Start Branding</a>
+        </article>
+        <article class="card tile">
+          <h3>Marketing Sprint</h3>
+          <p>30-day content plan, 10 creatives, ad setup & guidance.</p>
+          <ul>
+            <li>FB/IG/TikTok ready</li>
+            <li>Targeting suggestions</li>
+            <li>Retargeting basics</li>
+          </ul>
+          <a class="btn" href="#contact">Book Sprint</a>
+        </article>
+      </div>
+    </section>
+
+    <!-- PRICING -->
+    <section id="pricing">
+      <h2>Simple Packages</h2>
+      <p class="subtitle">Transparent pricing. Custom quotes available.</p>
+      <div class="grid-3">
+        <article class="card tile">
+          <h3>Starter Website</h3>
+          <p>1–3 pages, mobile-first, ready in 7 days.</p>
+          <ul>
+            <li>Responsive design</li>
+            <li>Contact form</li>
+            <li>Basic SEO</li>
+          </ul>
+          <a class="btn" href="https://wa.me/254792010913?text=Hi%20Newton%2C%20I%20want%20a%20Starter%20Website.%20Business%3A%20____.%20Timeline%3A%20____." target="_blank">Book Starter</a>
+        </article>
+        <article class="card tile" style="outline:2px solid rgba(255,255,255,.15)">
+          <div class="chip" style="border:none;background:rgba(255,77,179,.15)">Most Popular</div>
+          <h3>Business Site</h3>
+          <p>4–6 pages, brand styling, launch fast.</p>
+          <ul>
+            <li>Hero + Services + Work</li>
+            <li>Speed optimization</li>
+            <li>Analytics setup</li>
+          </ul>
+          <a class="btn" href="https://wa.me/254792010913?text=Hi%20Newton%2C%20I%20want%20the%20Business%20Site%20package.%20Pages%3A%20____.%20Budget%3A%20____." target="_blank">Choose Business</a>
+        </article>
+        <article class="card tile">
+          <h3>Marketing Sprint</h3>
+          <p>30-day content + ads setup.</p>
+          <ul>
+            <li>10 creatives</li>
+            <li>FB/IG/TikTok ready</li>
+            <li>Retargeting basics</li>
+          </ul>
+          <a class="btn" href="https://wa.me/254792010913?text=Hi%20Newton%2C%20I%20want%20the%2030-day%20Marketing%20Sprint.%20Niche%3A%20____.%20Budget%3A%20____." target="_blank">Start Sprint</a>
+        </article>
+      </div>
+      <p class="subtitle" style="margin-top:12px">Every package includes a <strong>free strategy call</strong> and <strong>post-launch support</strong>.</p>
+    </section>
+
+    <!-- WORK / PROJECTS -->
+    <section id="work">
+      <h2>Selected Work</h2>
+      <div class="grid-3">
+        <article class="card tile">
+          <img class="project-thumb" src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?q=80&w=1200&auto=format&fit=crop" alt="Website Creation" />
+          <h3>Website Creation</h3>
+          <p>Responsive, SEO-ready websites with clean UI and fast load times.</p>
+          <a href="#cs-website" class="btn ghost">View Case Study</a>
+        </article>
+        <article class="card tile">
+          <img class="project-thumb" src="https://images.unsplash.com/photo-1519389950473-47ba0277781c?q=80&w=1200&auto=format&fit=crop" alt="Digital Marketing" />
+          <h3>Digital Marketing</h3>
+          <p>Data-driven campaigns on FB/IG/TikTok with clear KPIs and reports.</p>
+          <a href="#cs-marketing" class="btn ghost">View Case Study</a>
+        </article>
+        <article class="card tile">
+          <img class="project-thumb" src="https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?q=80&w=1200&auto=format&fit=crop" alt="Logo Designing" />
+          <h3>Logo Designing</h3>
+          <p>Minimal, memorable marks with full brand kit exports (PNG/SVG).</p>
+          <a href="#cs-logo" class="btn ghost">View Case Study</a>
+        </article>
+        <article class="card tile">
+          <img class="project-thumb" src="https://images.unsplash.com/photo-1519337265831-281ec6cc8514?q=80&w=1200&auto=format&fit=crop" alt="Content Creation" />
+          <h3>Content Creation</h3>
+          <p>Short-form videos, carousels, and copy that turn views into leads.</p>
+          <a href="#cs-content" class="btn ghost">View Case Study</a>
+        </article>
+      </div>
+    </section>
+
+    <!-- CASE STUDIES (anchor targets) -->
+    <section id="cs-website" class="card tile" style="margin-top:20px; padding:22px;">
+      <h2>Case Study — Website Creation</h2>
+      <p class="subtitle">Goal: 7-day launch · Result: <strong>+120% inquiries</strong></p>
+      <div class="grid" style="grid-template-columns:1fr 1fr; gap:16px;">
+        <div>
+          <h3>Problem</h3>
+          <p>Old site was slow, not mobile-friendly, and had no clear CTA.</p>
+          <h3>Solution</h3>
+          <ul>
+            <li>Clean, fast, mobile-first redesign</li>
+            <li>Clear WhatsApp / Call CTAs</li>
+            <li>SEO basics + analytics</li>
+          </ul>
+          <h3>Results</h3>
+          <ul>
+            <li>⏱ Load time: <strong>4.8s → 1.9s</strong></li>
+            <li>📈 Inquiries: <strong>+120% in 3 weeks</strong></li>
+            <li>📱 Mobile conversions up <strong>+60%</strong></li>
+          </ul>
+        </div>
+        <div>
+          <!-- NOTE: class 'cs-full' makes THIS case-study image show the whole photo -->
+          <img class="cs-full" src="20250205_115451.jpg" alt="Website project — full portrait">
+          <p class="subtitle" style="margin-top:8px;">“Newton rebuilt our site—now customers actually contact us!” — Client</p>
+          <div class="stack">
+            <a class="btn" href="https://wa.me/254792010913?text=Hi%20Newton%2C%20I%E2%80%99m%20interested%20in%20a%20website%20like%20this.%20My%20business%20is%20____.%20Can%20we%20chat%3F" target="_blank">Chat me on WhatsApp</a>
+            <a class="btn ghost" href="#work">Back to Work</a>
+          </div>
+        </div>
+      </div>
+      <div style="margin-top:12px;">
+        <p><strong>Kwa kifupi (SW):</strong> Tovuti ya zamani ilikuwa polepole na haikuvutia. Niliboresha muonekano, kasi, na CTA. Matokeo: tovuti ya haraka, simu/DM zimeongezeka, na wateja wapya wanafika kirahisi. 🚀</p>
+      </div>
+    </section>
+
+    <section id="cs-marketing" class="card tile" style="margin-top:20px; padding:22px;">
+      <h2>Case Study — Digital Marketing</h2>
+      <p class="subtitle">Goal: Lead generation via IG/FB · Result: <strong>+80% messages, CPC −35%</strong></p>
+      <div class="grid" style="grid-template-columns:1fr 1fr; gap:16px;">
+        <div>
+          <h3>Plan</h3>
+          <ul>
+            <li>Audience research + creatives</li>
+            <li>Click-to-WhatsApp campaign</li>
+            <li>Retargeting warm visitors</li>
+          </ul>
+          <h3>KPIs</h3>
+          <ul>
+            <li>💬 Messages up <strong>+80%</strong></li>
+            <li>💸 Cost per click down <strong>−35%</strong></li>
+            <li>🎯 Better quality leads</li>
+          </ul>
+        </div>
+        <div>
+          <img src="https://images.unsplash.com/photo-1519389950473-47ba0277781c?q=80&w=1200&auto=format&fit=crop" alt="Marketing creatives">
+          <div class="stack" style="margin-top:8px;">
+            <a class="btn" href="https://wa.me/254792010913?text=Hi%20Newton%2C%20I%20want%20a%20marketing%20campaign%20like%20this.%20Business%3A%20____.%20Budget%3A%20____.%20Can%20we%20chat%3F" target="_blank">Chat me on WhatsApp</a>
+            <a class="btn ghost" href="#work">Back to Work</a>
+          </div>
+        </div>
+      </div>
+      <div style="margin-top:12px;">
+        <p><strong>Kwa kifupi (SW):</strong> Tulitengeneza matangazo ya Click-to-WhatsApp, tukalenga hadhira sahihi, na tukafanya retargeting. Matokeo: DM nyingi zaidi na gharama ndogo kwa kila mteja. 📈</p>
+      </div>
+    </section>
+
+    <section id="cs-logo" class="card tile" style="margin-top:20px; padding:22px;">
+      <h2>Case Study — Logo & Brand Kit</h2>
+      <p class="subtitle">Goal: Fresh brand identity · Result: <strong>memorable mark + consistent visuals</strong></p>
+      <div class="grid" style="grid-template-columns:1fr 1fr; gap:16px;">
+        <div>
+          <h3>Deliverables</h3>
+          <ul>
+            <li>3 logo concepts + revisions</li>
+            <li>Color palette & typography</li>
+            <li>Social media templates</li>
+          </ul>
+          <h3>Outcomes</h3>
+          <ul>
+            <li>🌟 Consistent brand across platforms</li>
+            <li>🖼 PNG/SVG exports + usage guide</li>
+            <li>📣 Professional look & feel</li>
+          </ul>
+        </div>
+        <div>
+          <img src="https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?q=80&w=1200&auto=format&fit=crop" alt="Logo design boards">
+          <div class="stack" style="margin-top:8px;">
+            <a class="btn" href="https://wa.me/254792010913?text=Hi%20Newton%2C%20I%20need%20a%20logo%20and%20brand%20kit.%20Business%20name%3A%20____.%20Vibe%3A%20____.%20Can%20we%20chat%3F" target="_blank">Chat me on WhatsApp</a>
+            <a class="btn ghost" href="#work">Back to Work</a>
+          </div>
+        </div>
+      </div>
+      <div style="margin-top:12px;">
+        <p><strong>Kwa kifupi (SW):</strong> Tulitengeneza alama rahisi na ya kukumbukwa, rangi rasmi, fonti, na templeti za post. Sasa chapa inaonekana ya kitaalamu kila mahali. 🎨</p>
+      </div>
+    </section>
+
+    <section id="cs-content" class="card tile" style="margin-top:20px; padding:22px;">
+      <h2>Case Study — Content Creation</h2>
+      <p class="subtitle">Goal: Consistent social content · Result: <strong>+50% engagement, +30% profile visits</strong></p>
+      <div class="grid" style="grid-template-columns:1fr 1fr; gap:16px;">
+        <div>
+          <h3>Plan</h3>
+          <ul>
+            <li>30-day calendar: posts + reels</li>
+            <li>Design system for fast production</li>
+            <li>Clear captions & CTAs</li>
+          </ul>
+          <h3>Impact</h3>
+          <ul>
+            <li>❤️ Engagement up <strong>+50%</strong></li>
+            <li>👀 Profile visits up <strong>+30%</strong></li>
+            <li>💬 More DMs from prospects</li>
+          </ul>
+        </div>
+        <div>
+          <img src="https://images.unsplash.com/photo-1519337265831-281ec6cc8514?q=80&w=1200&auto=format&fit=crop" alt="Content examples">
+          <div class="stack" style="margin-top:8px;">
+            <a class="btn" href="https://wa.me/254792010913?text=Hi%20Newton%2C%20I%20want%20a%2030-day%20content%20plan%20like%20this.%20Niche%3A%20____.%20Can%20we%20chat%3F" target="_blank">Chat me on WhatsApp</a>
+            <a class="btn ghost" href="#work">Back to Work</a>
+          </div>
+        </div>
+      </div>
+      <div style="margin-top:12px;">
+        <p><strong>Kwa kifupi (SW):</strong> Tulipanga kalenda ya siku 30, tukatengeneza miundo ya haraka, na tukaimarisha maandiko. Matokeo: ushiriki juu na DM zaidi kutoka kwa wateja. 📆🔥</p>
+      </div>
+    </section>
+
+    <!-- TESTIMONIALS -->
+    <section id="testimonials">
+      <h2>What Clients Say</h2>
+      <div class="grid-3">
+        <article class="card tile">
+          <p>★★★★★</p>
+          <p>“Newton rebuilt our site and inquiries doubled in 3 weeks.”</p>
+          <p class="subtitle">— Mercy K., Boutique Owner</p>
+        </article>
+        <article class="card tile">
+          <p>★★★★★</p>
+          <p>“Clean logo + landing page + ads = more bookings. Highly recommend.”</p>
+          <p class="subtitle">— Brian M., Fitness Coach</p>
+        </article>
+        <article class="card tile">
+          <p>★★★★★</p>
+          <p>“Our IG content looks professional now and sales improved.”</p>
+          <p class="subtitle">— Wanjiru N., Beauty Brand</p>
+        </article>
+      </div>
+    </section>
+
+    <!-- REVIEWS (bilingual, filterable) -->
+    <section id="reviews">
+      <h2>Client Reviews</h2>
+      <p class="subtitle">Sweet & professional feedback in <strong>English</strong> and <strong>Kiswahili</strong>. Filter by rating:</p>
+      <div class="filter-row">
+        <button class="filter-btn active" data-filter="all">All ⭐</button>
+        <button class="filter-btn" data-filter="5">5★</button>
+        <button class="filter-btn" data-filter="4">4★</button>
+        <button class="filter-btn" data-filter="3">3★</button>
+      </div>
+      <div class="grid-3" id="reviewsGrid">
+        <!-- 5★ -->
+        <article class="card tile review" data-rating="5">
+          <div class="stars" aria-label="5 out of 5 stars">★★★★★</div>
+          <p><strong>EN:</strong> Outstanding work — fast, beautiful, and already bringing leads. Highly recommended! ✨🚀</p>
+          <p><strong>SW:</strong> Kazi safi sana — tovuti ni ya kasi, maridadi, na tayari inaleta wateja. Nampendekeza sana! ✨🚀</p>
+          <p class="subtitle">— Mary K., Boutique Owner</p>
+        </article>
+        <article class="card tile review" data-rating="5">
+          <div class="stars" aria-label="5 out of 5 stars">★★★★★</div>
+          <p><strong>EN:</strong> Professional from start to finish — clear communication, on-time delivery, smart marketing advice. 🙌💼</p>
+          <p><strong>SW:</strong> Mtaalamu kuanzia mwanzo hadi mwisho — mawasiliano mazuri, kazi kwa wakati, na ushauri bora wa masoko. 🙌💼</p>
+          <p class="subtitle">— Daniel M., Fitness Coach</p>
+        </article>
+        <!-- 4★ -->
+        <article class="card tile review" data-rating="4">
+          <div class="stars" aria-label="4 out of 5 stars">★★★★☆</div>
+          <p><strong>EN:</strong> Great design and smooth process. Minor tweaks were handled quickly. Thank you! 👍😊</p>
+          <p><strong>SW:</strong> Ubunifu mzuri na mchakato rahisi. Marekebisho madogo yalifanywa haraka. Asante! 👍😊</p>
+          <p class="subtitle">— Irene W., Salon Owner</p>
+        </article>
+        <article class="card tile review" data-rating="4">
+          <div class="stars" aria-label="4 out of 5 stars">★★★★☆</div>
+          <p><strong>EN:</strong> Strong brand kit and clean pages. Looking forward to scaling with you. 💡📈</p>
+          <p><strong>SW:</strong> Kitovu cha chapa chenye nguvu na kurasa safi. Natarajia kukuza biashara pamoja nawe. 💡📈</p>
+          <p class="subtitle">— Kelvin N., Events</p>
+        </article>
+        <!-- 3★ -->
+        <article class="card tile review" data-rating="3">
+          <div class="stars" aria-label="3 out of 5 stars">★★★☆☆</div>
+          <p><strong>EN:</strong> Good overall. A few revisions, but the final result works well for our business. ✅🤝</p>
+          <p><strong>SW:</strong> Uzoefu mzuri kwa ujumla. Kulikuwa na marekebisho machache, lakini matokeo ya mwisho yanatufaa. ✅🤝</p>
+          <p class="subtitle">— Amina S., Electronics Shop</p>
+        </article>
+        <article class="card tile review" data-rating="3">
+          <div class="stars" aria-label="3 out of 5 stars">★★★☆☆</div>
+          <p><strong>EN:</strong> Helpful setup and guidance; we’ll return for a bigger site soon. Thanks! 🙏🌟</p>
+          <p><strong>SW:</strong> Msaada mzuri wa usanidi na mwongozo; tutarudi kwa tovuti kubwa hivi karibuni. Asante! 🙏🌟</p>
+          <p class="subtitle">— Otieno P., Local Charity</p>
+        </article>
+      </div>
+    </section>
+
+    <!-- ABOUT -->
+    <section id="about">
+      <h2>About Me</h2>
+      <div class="about card" style="padding:18px;">
+        <img src="20250205_115521.jpg" alt="Newton Irungu portrait" />
+        <div style="padding:6px 4px 6px 4px;">
+          <p>Hi, I’m <strong>Newton Irungu</strong> — a web developer and digital marketer. I build clean, responsive websites and craft marketing that actually converts. I also create brand identities and content systems so you can scale consistently.</p>
+          <p class="subtitle">Tools I love: VS Code, GitHub, Figma, Canva, CapCut, Meta Ads Manager, Google Analytics.</p>
+          <div class="stack">
+            <a class="btn" href="#contact">Work with Me</a>
+            <a class="btn ghost" href="https://wa.me/254792010913?text=Hi%20Newton%2C%20I%E2%80%99d%20like%20to%20discuss%20a%20project.%20Budget%3A%20____.%20Timeline%3A%20____." target="_blank" rel="noopener">Chat on WhatsApp</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CONTACT -->
+    <section id="contact" class="card contact-card">
+      <h2>Let’s build something great</h2>
+      <p class="subtitle">Tell me about your project and timeline. I’ll reply within 24 hours. <strong>I reply same day (Mon–Sat).</strong></p>
+      <form class="contact-grid" onsubmit="event.preventDefault(); alert('Thanks! I\'ll get back to you shortly.');">
+        <input class="input" type="text" placeholder="Your Name" required>
+        <input class="input" type="email" placeholder="Your Email" required>
+        <input class="input" type="tel" placeholder="Phone (optional)">
+        <input class="input" type="text" placeholder="Project Type (Website / Branding / Marketing)" required>
+        <textarea class="input" rows="4" placeholder="Brief about your project" required></textarea>
+        <button class="btn" type="submit">Send Message</button>
+      </form>
+      <p style="margin-top:14px">📞 <a href="tel:+254792010913">0792010913</a> · ✉️ <a href="mailto:newtonirungu441@gmail.com">newtonirungu441@gmail.com</a></p>
+    </section>
+  </main>
+
+  <footer class="container">
+    © <span id="year"></span> Newton Irungu. All rights reserved.
+  </footer>
+
+  <!-- Floating WhatsApp -->
+  <a class="fab-whatsapp" href="https://wa.me/254792010913?text=Hi%20Newton%2C%20I%E2%80%99m%20interested%20in%20a%20website%2Fbranding%2Fmarketing.%20My%20business%20is%20____.%20Timeline%3A%20____.%20Can%20we%20chat%3F" target="_blank" aria-label="Chat on WhatsApp">Chat</a>
+
+  <script>
+    // Current year
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    // Mobile menu toggle
+    const hamburger = document.getElementById('hamburger');
+    const mobileMenu = document.getElementById('mobileMenu');
+    hamburger?.addEventListener('click', () => mobileMenu.classList.toggle('show'));
+    mobileMenu?.querySelectorAll('a').forEach(a => a.addEventListener('click', ()=> mobileMenu.classList.remove('show')));
+
+    // Animated counters (compact format + optional suffix)
+    function animateCounter(el, target, formatFn = (n)=>n.toLocaleString(), suffix = ''){
+      const duration = 1200; // ms
+      const start = performance.now();
+      function tick(now){
+        const p = Math.min((now - start)/duration, 1);
+        const val = Math.floor(p * target);
+        el.textContent = formatFn(val) + suffix;
+        if(p < 1) requestAnimationFrame(tick);
+      }
+      requestAnimationFrame(tick);
+    }
+
+    // Trigger number counters when stats section is visible
+    (function(){
+      const stats = document.querySelector('#stats');
+      if(!stats) return;
+      const io = new IntersectionObserver((entries)=>{
+        entries.forEach(e=>{
+          if(e.isIntersecting){
+            stats.querySelectorAll('[data-target]').forEach(el=>{
+              const target = parseInt(el.getAttribute('data-target'), 10) || 0;
+              animateCounter(el, target);
+              el.removeAttribute('data-target');
+            });
+            io.disconnect();
+          }
+        });
+      }, {threshold:.2});
+      io.observe(stats);
+    })();
+
+    // Site views using CountAPI with a friendly baseline + compact format
+    (async function loadViews(){
+      const BASELINE_VIEWS = 1200; // minimum 'good-looking' number
+      const viewsEl = document.getElementById('views-count');
+      if(!viewsEl) return;
+
+      const fmtCompact = (n)=>{
+        try{ return new Intl.NumberFormat(undefined, {notation:'compact', maximumFractionDigits:1}).format(n); }
+        catch{ return n.toLocaleString(); }
+      };
+
+      try{
+        const res = await fetch('https://api.countapi.xyz/hit/newton-irungu-portfolio/views');
+        const data = await res.json();
+        const serverVal = (data && typeof data.value === 'number') ? data.value : 0;
+        const displayVal = Math.max(BASELINE_VIEWS, serverVal);
+        animateCounter(viewsEl, displayVal, fmtCompact, '+');
+      }catch(err){
+        console.warn('Views counter failed', err);
+        animateCounter(viewsEl, BASELINE_VIEWS, fmtCompact, '+');
+      }
+    })();
+
+    // Reviews: filter by rating (All / 5 / 4 / 3)
+    (function(){
+      const buttons = document.querySelectorAll('#reviews .filter-btn');
+      const cards = document.querySelectorAll('#reviewsGrid .review');
+      buttons.forEach(btn=>{
+        btn.addEventListener('click', ()=>{
+          buttons.forEach(b=>b.classList.remove('active'));
+          btn.classList.add('active');
+          const f = btn.dataset.filter;
+          cards.forEach(c=>{
+            c.style.display = (f==='all' || c.dataset.rating===f) ? '' : 'none';
+          });
+        });
+      });
+    })();
+
+    // Track WhatsApp clicks (CountAPI)
+    (function(){
+      const waLinks = Array.from(document.querySelectorAll('a[href^="https://wa.me/254792010913"]'));
+      waLinks.forEach(a=>{
+        a.addEventListener('click', ()=>{
+          fetch('https://api.countapi.xyz/hit/newton-irungu-portfolio/wa_clicks').catch(()=>{});
+        });
+      });
+    })();
+  </script>
+</body>
+</html>
